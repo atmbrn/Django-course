@@ -196,3 +196,28 @@ def show_cookies(request: HttpRequest) -> HttpResponse:
     # Django зберігає session_id у кукі 'sessionid'
     session_cookie = request.COOKIES.get("sessionid", "No session cookie")
     return HttpResponse(f"Session cookie: {session_cookie}")
+
+
+# ------------------ Visit counter views ------------------
+
+def visit_counter(request: HttpRequest) -> HttpResponse:
+    """
+    Лічильник відвідувань:
+    - безпечно читаємо значення через get()
+    - якщо ключа немає, стартуємо з 0
+    - збільшуємо на 1 і зберігаємо назад у сесію
+    """
+    count = request.session.get("visit_count", 0)
+    count += 1
+    request.session["visit_count"] = count
+    return HttpResponse(f"You have visited this page {count} times")
+
+
+def reset_visit_counter(request: HttpRequest) -> HttpResponse:
+    """
+    Скинути лічильник (видалити ключ з сесії) і перенаправити на сторінку лічильника.
+    """
+    request.session.pop("visit_count", None)
+    from django.shortcuts import redirect
+
+    return redirect("visit_counter")
