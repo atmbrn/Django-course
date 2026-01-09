@@ -1,0 +1,5 @@
+Project: Git Practice
+Version: 1.0
+
+Features:
+- Base structure
