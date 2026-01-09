@@ -3,3 +3,7 @@ Version: 1.0
 
 Features:
 - Base structure
+
+- Login system
+
+- Remember me option
