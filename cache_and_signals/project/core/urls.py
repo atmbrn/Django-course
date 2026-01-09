@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("caching.urls")),
     path("projects/", include("django_signals.urls")),
+    path("topics/", include("topics.urls")),
 ]
