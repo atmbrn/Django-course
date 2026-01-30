@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Topics</h1>
+
+  <form method="post" action="{% url 'topics:create' %}">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="New topic name" required />
+    <button type="submit">Create</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Subscribers</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in topics %}
+      <tr>
+        <td>{{ t.name }}</td>
+        <td>{{ t.subscribers_count }}</td>
+        <td>
+          {% if t.is_subscribed %}
+            <form method="post" action="{% url 'topics:unsubscribe' t.id %}" style="display:inline">
+              {% csrf_token %}
+              <button type="submit">Unsubscribe</button>
+            </form>
+          {% else %}
+            <form method="post" action="{% url 'topics:subscribe' t.id %}" style="display:inline">
+              {% csrf_token %}
+              <button type="submit">Subscribe</button>
+            </form>
+          {% endif %}
+
+          <form method="post" action="{% url 'topics:delete' t.id %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
