@@ -1,11 +1,27 @@
 from django.db import models
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    rating = models.FloatField(default=0)
-    rating_count = models.PositiveIntegerField(default=0)
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-        return str(self.name)
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment on {self.post.title}"
+
+    class Meta:
+        ordering = ['-created_at']
